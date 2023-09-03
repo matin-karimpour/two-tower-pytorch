@@ -1,0 +1,10 @@
+{"user_embedding_num": 943, 
+"user_embedding_dim": 5, 
+"item_embedding_num": 1682, 
+"item_embedding_dim": 5, 
+"user_dense": [50, 60, 20], 
+"item_dense": [50, 60, 20], 
+"activation": "relu",
+"user_features": ["user_id", "age"],
+"item_features" :["movie_id","Action"],
+"label": ["rating"]}
