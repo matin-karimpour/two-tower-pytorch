@@ -23,11 +23,12 @@ def train(dataloader, model, loss_fn, optimizer):
     model.train()
     losses = []
     for batch, (X, y) in enumerate(dataloader):
-        X, y = (X[0], X[1]), y
+        X, y = (X[0], X[1]), y.reshape((-1,))
 
         # Compute prediction error
-        pred = model(X)
-        loss = loss_fn(pred, y.float())
+        pred, _ = model(X)
+        
+        loss = loss_fn(pred.float(), y.float())
         losses.append(loss)
         # Backpropagation
         loss.backward()
@@ -49,8 +50,8 @@ def test(dataloader, model, loss_fn, ):
     test_loss = 0
     with torch.no_grad():
         for X, y in dataloader:
-            X, y = (X[0], X[1]), y
-            pred = model(X)
+            X, y = (X[0], X[1]), y.reshape((-1,))
+            pred, _ = model(X)
             test_loss += loss_fn(pred, y.float()).item()
     test_loss /= num_batches
     print(f"Test Error: \n , Avg loss: {test_loss:>8f} \n")
@@ -78,7 +79,7 @@ def fit(model,
         model_save_path: str="best_model.pt",
         patience: int = 10,
         ):
-    loss_fn = nn.MSELoss()
+    loss_fn = nn.CrossEntropyLoss()
     optimizer = torch.optim.SGD(model.parameters(), lr=1e-3)
     test_losses = []
     early_stop_counter = 0

@@ -25,8 +25,8 @@ class CustomDataset(Dataset):
 
         user_id = self.user_id[idx]
         movie_id = self.movie_id[idx]
-        rating = self.rating[idx]
-
+        rating = self.rating[idx] 
+        #print(rating)
         return [torch.tensor(user_id).to(self.device),
                  torch.tensor(movie_id).to(self.device)], torch.tensor(rating).to(self.device)
     

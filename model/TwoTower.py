@@ -11,8 +11,7 @@ class TwoTower(BaseModel):
 
         self.item_embedding_num = conf["item_embedding_num"]
         self.item_embedding_dim = conf["item_embedding_dim"]
-        self.user_embedding_dim2 = 200
-        self.item_embedding_dim2 = 200
+        
 
         self.user_dense = [len(conf["user_features"])*self.user_embedding_dim ,*conf["user_dense"]]
         self.item_dense = [len(conf
@@ -48,10 +47,9 @@ class TwoTower(BaseModel):
         user_embed = self.flatten(user_embed)
         item_embed = self.item_embedding(X[1])
         item_embed = self.flatten(item_embed)
-
         user  = self.user_tower(user_embed)
         item  = self.item_tower(item_embed)
-    
-        score = torch.dot(user.reshape((-1,)), item.reshape((-1,)))
-        return score
+
+        score = torch.sum(torch.mul(user, item), 1)
+        return score, (user,item)
     
